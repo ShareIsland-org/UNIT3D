@@ -102,3 +102,25 @@
     }
 }
 /* purgecss end ignore */
+
+
+.page__torrent--create .bbcode-rendered.bbcode-rendered pre>code,
+.page__torrent--edit .bbcode-rendered.bbcode-rendered pre>code,
+.page__torrent--show .bbcode-rendered pre>code {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.page__torrent--create .bbcode-rendered__clipboard pre,
+.page__torrent--edit .bbcode-rendered__clipboard pre,
+.page__torrent--show .bbcode-rendered__clipboard pre {
+    flex: 1;
+}
+
+.page__torrent--create .bbcode-rendered__clipboard-container,
+.page__torrent--edit .bbcode-rendered__clipboard-container,
+.page__torrent--show .bbcode-rendered__clipboard-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
