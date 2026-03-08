@@ -25,6 +25,10 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>
                             @switch($siteTheme->total_style)
+                                @case('101')
+                                    Island Navy
+
+                                @break
                                 @case('0')
                                     Light theme
 

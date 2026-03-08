@@ -273,6 +273,14 @@
                                             : ''
                                     "
                                     x-bind:required="(cats[cat].type === 'movie' || cats[cat].type === 'tv') && imdb_title_exists"
+                                    x-on:paste="
+                                        matches = $event.clipboardData.getData('text').match(/tt0*(\d{7,})/);
+
+                                        if (matches !== null) {
+                                            $el.value = Number(matches[1]);
+                                            $event.preventDefault();
+                                        }
+                                    "
                                 />
                                 <label class="form__label form__label--floating" for="autoimdb">
                                     IMDB ID

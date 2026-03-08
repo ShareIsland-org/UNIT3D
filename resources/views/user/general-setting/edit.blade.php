@@ -56,6 +56,13 @@
                         <select id="style" class="form__select" name="style" required>
                             <option
                                 class="form__option"
+                                value="101"
+                                @selected($user->settings->style === 101)
+                                >
+                                Island Navy
+                            </option>
+                            <option
+                                class="form__option"
                                 value="0"
                                 @selected($user->settings->style === 0)
                             >

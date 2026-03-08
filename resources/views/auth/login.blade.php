@@ -30,9 +30,8 @@
             <section class="auth-form">
                 <form class="auth-form__form" method="POST" action="{{ route('login') }}">
                     @csrf
-                    <a class="auth-form__branding" href="{{ route('home.index') }}">
-                        <i class="fal fa-tv-retro"></i>
-                        <span class="auth-form__site-logo">{{ \config('other.title') }}</span>
+		    <a class="auth-form__branding" href="{{ route('home.index') }}">
+			<img src="{{ url('/img/login-logo.png') }}" style="height: auto; width:100%;">
                     </a>
                     @if (Session::has('warning') || Session::has('success') || Session::has('info'))
                         <ul class="auth-form__important-infos">

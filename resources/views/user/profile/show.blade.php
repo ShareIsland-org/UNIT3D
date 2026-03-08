@@ -316,7 +316,7 @@
                                             }
                                         @endphp
 
-                                        <td>
+                                        <td class="{{ $connectable ? 'text-green' : 'text-red' }}">
                                             @choice('user.client-connectable-state', $connectable)
                                         </td>
                                     @endif
