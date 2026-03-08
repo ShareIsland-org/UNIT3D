@@ -283,4 +283,24 @@ return [
         */
         'max-buffer-to-buy-upload' => null,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auto Reseed Max Seeders Threshold
+    |--------------------------------------------------------------------------
+    | Torrents with seeders <= this value will automatically receive a reseed
+    | request via the auto:add_reseeds command.
+    | Default: 0 (only trigger when there are zero seeders)
+    */
+    'reseed_max_seeders' => (int) env('RESEED_MAX_SEEDERS', 0),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auto Remove Reseeds: Minimum Seeders To Consider Torrent Healthy
+    |--------------------------------------------------------------------------
+    | A reseed request is removed when the torrent reaches this many seeders
+    | with zero leechers.
+    | Default: 2
+    */
+    'reseed_min_seeders' => (int) env('RESEED_MIN_SEEDERS', 2),
 ];

@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Console\Commands\AutoAddReseeds;
 use App\Console\Commands\AutoBonAllocation;
 use App\Console\Commands\AutoCacheRandomMediaIds;
 use App\Console\Commands\AutoCacheUserLeechCounts;
@@ -107,6 +108,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(AutoSyncPeopleToMeilisearch::class)->daily();
         $schedule->command(AutoRemoveExpiredDonors::class)->daily();
         $schedule->command(AutoRemoveReseeds::class)->daily();
+        $schedule->command(AutoAddReseeds::class)->daily();
         // $schedule->command(AutoBanDisposableUsers::class)->weekends();
         $schedule->command(CleanupCommand::class)->daily();
         $schedule->command(BackupCommand::class, ['--only-db'])->daily();

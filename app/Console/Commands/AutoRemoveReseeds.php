@@ -45,16 +45,10 @@ class AutoRemoveReseeds extends Command
     final public function handle(): void
     {
         TorrentReseed::query()
-            ->whereDoesntHave(
-                'history',
-                fn ($query) => $query
-                    ->where('seeder', '=', false)
-                    ->where('updated_at', '>', now()->subDays(14))
-            )
-            ->orWhereHas(
+            ->whereHas(
                 'torrent',
                 fn ($query) => $query
-                    ->where('seeders', '>=', 4)
+                    ->where('seeders', '>=', config('other.reseed_min_seeders'))
                     ->where('leechers', '=', 0)
             )
             ->delete();

@@ -90,6 +90,48 @@ bun run build
     bun run build
     ```
 
-## 5. Meilisearch maintenance
+## 5. Auto reseed requests
+
+UNIT3D can automatically create reseed requests for torrents that have few or no seeders, replicating the same action a user would take by clicking the "Request Reseed" button.
+
+When triggered, the command:
+
+- Finds all approved torrents with seeders at or below the configured threshold that don't already have a reseed request
+- Creates a reseed request record on their behalf
+- Sends a database notification to all users who previously completed downloading the torrent and are no longer actively seeding it
+- Posts a single summary message in the system chat once all requests are created
+
+The command runs daily and works alongside the existing `auto:remove_reseeds` command, which cleans up reseed requests once a torrent is healthy again.
+
+### Configuration
+
+All thresholds are configurable in your `.env` file:
+
+```bash
+# auto:add_reseeds - trigger threshold
+RESEED_MAX_SEEDERS=0    # create a request when seeders <= this value (0 = only when dead)
+
+# auto:remove_reseeds - cleanup threshold
+RESEED_MIN_SEEDERS=2    # remove request when torrent reaches this many seeders (with 0 leechers)
+```
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `RESEED_MAX_SEEDERS` | `0` | Trigger only when there are **zero** seeders. Set to `2` to match the manual button behaviour. |
+| `RESEED_MIN_SEEDERS` | `2` | Torrent is considered healthy and the request is removed once it reaches this many seeders with no leechers. |
+
+### Running manually
+
+```bash
+php artisan auto:add_reseeds
+```
+
+To force re-notification for torrents that already have a reseed request (e.g. after a long period of inactivity), use the `--force` flag. This deletes existing reseed records for still-dead torrents before re-creating them and re-sending notifications.
+
+```bash
+php artisan auto:add_reseeds --force
+```
+
+## 6. Meilisearch maintenance
 
 Refer [Meilisearch setup for UNIT3D](https://github.com/HDInnovations/UNIT3D/wiki/Meilisearch-Setup-for-UNIT3D), specifically the [maintenance](https://github.com/HDInnovations/UNIT3D/wiki/Meilisearch-Setup-for-UNIT3D#3-maintenance) section, for managing upgrades and syncing indexes.
