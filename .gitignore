@@ -53,3 +53,5 @@ frankenphp-worker.php
 /data
 config/caddy/autosave.json
 /data/
+/storage/logs/*.log*
+unit3d-announce/target/

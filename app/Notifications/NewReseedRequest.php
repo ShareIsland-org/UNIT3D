@@ -53,7 +53,7 @@ class NewReseedRequest extends Notification implements ShouldQueue
 
         return [
             'title' => 'New Reseed Request',
-            'body'  => \sprintf('Some time ago, you downloaded: %s. Now its dead and someone has requested a reseed on it. If you still have this torrent in storage, please consider reseeding it!', $this->torrent->name),
+            'body'  => \sprintf('Qualche tempo fa hai scaricato: %s. Ora qualcuno ne ha richiesto il reseeding. Se hai ancora questo torrent in archivio, ti preghiamo di prendere in considerazione la possibilità di condividerlo!', $this->torrent->name),
             'url'   => \sprintf('%s/torrents/%s', $appurl, $this->torrent->id),
         ];
     }

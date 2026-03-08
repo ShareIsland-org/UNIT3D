@@ -6,22 +6,22 @@
         @if ($this->enabled)
             @if ($showingConfirmation)
                 <span class="text-warning">
-                    {{ __('Finish enabling two factor authentication.') }}
+                    {{ __('Completa l abilitazione dell autenticazione a due fattori.') }}
                 </span>
             @else
                 <span class="text-success">
-                    {{ __('You have enabled two factor authentication.') }}
+                    {{ __('Hai abilitato l autenticazione a due fattori.') }}
                 </span>
             @endif
         @else
             <span class="text-danger">
-                {{ __('You have not enabled two factor authentication.') }}
+                {{ __('Non hai abilitato l autenticazione a due fattori.') }}
             </span>
         @endif
 
         <div>
             <span class="text-muted">
-                {{ __('When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from a synchronized 2fa app such as Google Authenticator, Authy, BitWarden, etc.') }}
+                {{ __('Quando l autenticazione a due fattori è abilitata, ti verrà richiesto un token sicuro e casuale durante l autenticazione. Puoi recuperare questo token da un app 2FA sincronizzata come Google Authenticator, Authy, BitWarden, ecc.') }}
             </span>
         </div>
 
@@ -30,9 +30,10 @@
                 <div>
                     <p class="text-info">
                         @if ($showingConfirmation)
-                            {{ __('To finish enabling two factor authentication, scan the following QR code using your phone\'s authenticator application or enter the setup key and provide the generated OTP code.') }}
+                            {{ __('Per completare l abilitazione dell autenticazione a due fattori, scansiona il seguente codice QR utilizzando l applicazione di autenticazione del tuo telefono oppure inserisci la chiave di configurazione e fornisci il codice OTP generato.
+') }}
                         @else
-                            {{ __('Two factor authentication is now enabled. Scan the following QR code using your phone\'s authenticator application or enter the setup key.') }}
+                            {{ __('L autenticazione a due fattori è ora abilitata. Scansiona il seguente codice QR utilizzando l applicazione di autenticazione del tuo telefono o inserisci la chiave di configurazione..') }}
                         @endif
                     </p>
                 </div>
@@ -71,7 +72,7 @@
             @if ($showingRecoveryCodes)
                 <div class="panel__body">
                     <span class="text-danger">
-                        {{ __('Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.') }}
+                        {{ __('Conserva questi codici di recupero in un gestore di password sicuro. Possono essere utilizzati per recuperare l accesso al tuo account in caso di smarrimento del dispositivo di autenticazione a due fattori.') }}
                     </span>
                     {{-- format-ignore-start --}}
                     <pre>
@@ -99,7 +100,7 @@
                         class="form__button form__button--filled"
                         wire:click="regenerateRecoveryCodes"
                     >
-                        {{ __('Regenerate Recovery Codes') }}
+                        {{ __('Rigenera i codici di recupero') }}
                     </button>
                 @elseif ($showingConfirmation)
                     <button
@@ -115,7 +116,7 @@
                         class="form__button form__button--filled"
                         wire:click="showRecoveryCodes"
                     >
-                        {{ __('Show Recovery Codes') }}
+                        {{ __('Mostra codici di recupero') }}
                     </button>
                 @endif
 

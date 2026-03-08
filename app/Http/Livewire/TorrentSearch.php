@@ -219,7 +219,7 @@ class TorrentSearch extends Component
     public ?string $driver = 'meilisearch';
 
     #[Url(history: true)]
-    public int $perPage = 25;
+    public int $perPage = 50;
 
     #[Url(except: 'bumped_at')]
     public string $sortField = 'bumped_at';

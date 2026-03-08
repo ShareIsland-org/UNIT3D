@@ -15,7 +15,7 @@ return [
     'click' => 'Clic',
     'to-enable-editor' => 'per abilitare l editor',
     'featured-by' => 'Messo in vetrina da',
-    'featured-torrents' => 'Torrents in vetrina',
+    'featured-torrents' => 'Torrents in vetrina, Freeleech e Doppio UP',
     'featured-torrents-intro' => 'Prendili ora!',
     'featured-until' => 'Questo è in vetrina fino a',
     'top-torrents' => 'Top Torrents',

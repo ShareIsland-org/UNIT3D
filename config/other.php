@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'title' => 'UNIT3D',
+    'title' => 'ShareIsland',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     |
     */
 
-    'subTitle' => 'Built On Laravel',
+    'subTitle' => 'Kingdom',
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     |
     */
 
-    'meta_description' => 'Built On Laravel',
+    'meta_description' => 'Kingdom',
 
     /*
     |--------------------------------------------------------------------------
@@ -66,7 +66,7 @@ return [
     | Date Site Was Born
     |
     */
-    'birthdate' => 'December 30th 2017',
+    'birthdate' => '11 Febbraio 2011',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     */
     'freeleech' => false,
 
-    'freeleech_until' => '12/23/2017 3:00 PM EST',
+    'freeleech_until' => '1/25/2026 6:00 PM EST',
 
     /*
     |--------------------------------------------------------------------------
@@ -98,7 +98,7 @@ return [
     | Global Refund Download
     |
     */
-    'refundable' => false,
+    'refundable' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -130,7 +130,7 @@ return [
         'Administrator',
         'Owner',
     ],
-    'max_unused_user_invites' => 1,
+    'max_unused_user_invites' => 5,
 
     'hours-until-invite-after-2fa' => 24,
 
@@ -142,7 +142,7 @@ return [
     | This will be the upload and download given to new members. (In Bytes!)
     | Default: 50GiB Upload and 1GiB Download
     */
-    'default_upload'   => '53687091200',
+    'default_upload'   => '107374182400',
     'default_download' => '1073741824',
 
     /*
@@ -163,7 +163,7 @@ return [
     | 11 = Revel
     | 12 = Material Design v3 Light
     */
-    'default_style' => 12,
+    'default_style' => 6,
 
     /*
     |--------------------------------------------------------------------------
@@ -206,7 +206,7 @@ return [
     |--------------------------------------------------------------------------
     | Example: 4
     */
-    'upload-guide_url' => env('APP_URL').'/pages/4',
+    'upload-guide_url' => env('APP_URL').'/wikis/35',
 
     /*
     |--------------------------------------------------------------------------
@@ -216,7 +216,7 @@ return [
     | 0 = Disabled
     | If enabled, Staff members get notifications instead of posting being announced in chat.
     */
-    'staff-forum-notify' => '0',
+    'staff-forum-notify' => '1',
 
     /*
     |--------------------------------------------------------------------------
@@ -281,7 +281,7 @@ return [
         | null = Disabled
         | Example : 10 * 1024 * 1024 * 1024 * 1024
         */
-        'max-buffer-to-buy-upload' => null,
+        'max-buffer-to-buy-upload' => 10 * 1024 * 1024 * 1024 * 1024,
     ],
 
     /*

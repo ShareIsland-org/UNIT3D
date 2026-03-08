@@ -31,7 +31,7 @@ return [
     'description' => 'Descrizione',
     'dont-have-bps' => 'Non hai abbastanza bonus',
     'edit-request' => 'Modifica richiesta',
-    'enter-bp' => 'Inserisci punti bonus (minimo 100)',
+    'enter-bp' => 'Inserisci punti bonus (minimo 1000)',
     'enter-hash' => 'Inserisci l\'ID di informazioni del torrente caricato',
     'fill' => 'Riempire',
     'fill-request' => 'Compila questa richiesta',

@@ -34,7 +34,7 @@ return [
     |
     */
 
-    'source' => 'UNIT3D',
+    'source' => 'ShareIsland',
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'created_by'        => 'Edited by UNIT3D',
+    'created_by'        => 'Caricato su ShareIsland',
     'created_by_append' => true,
 
     /*
@@ -57,7 +57,7 @@ return [
     |
     */
 
-    'comment' => 'This torrent was downloaded from UNIT3D',
+    'comment' => 'Scaricato da ShareIsland',
 
     /*
     |--------------------------------------------------------------------------

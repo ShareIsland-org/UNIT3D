@@ -31,14 +31,16 @@
                     action="{{ route('verification.send') }}"
                 >
                     @csrf
-                    <a class="auth-form__branding" href="{{ route('home.index') }}">
-                        <i class="fal fa-tv-retro"></i>
-                        <span class="auth-form__site-logo">{{ \config('other.title') }}</span>
+		    <a class="auth-form__branding" href="{{ route('home.index') }}">
+			<img src="{{ url('/img/login-logo.png') }}" style="height: auto; width:100%;">
                     </a>
                     <ul class="auth-form__important-infos">
                         <li class="auth-form__important-info">Almost done...</li>
                         <li class="auth-form__important-info">
-                            Click the verification link sent to your email to activate your account.
+                            Click the button below and we'll email you shortly.
+                        </li>
+                        <li class="auth-form__important-info">
+                            Open it up to activate your account.
                         </li>
                         @if (Session::has('warning'))
                             <li class="auth-form__important-info">
@@ -62,10 +64,9 @@
                         @hiddencaptcha
                     @endif
 
-                    <details class="auth-form__dropdown">
-                        <summary class="auth-form__dropdown-text">Having issues?</summary>
-                        <button class="auth-form__primary-button">Resend verification email</button>
-                    </details>
+                    <button class="auth-form__primary-button">
+                        {{ __('auth.send-verification-email') }}
+                    </button>
                     @if (Session::has('errors') || Session::has('status'))
                         <ul class="auth-form__errors">
                             @foreach ($errors->all() as $error)

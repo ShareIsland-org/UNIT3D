@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'subject' => 'Welcome to UNIT3D',
+    'subject' => 'Benvenuto su ShareIsland',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,14 @@ return [
     |
     */
 
-    'message' => 'Welcome To [b]UNIT3D[/b].
+    'message' => '[b]Benvenuto su ShareIsland![/b] 🏝️
 
-    - UNIT3D :space_invader:',
+Per iniziare col piede giusto, ti suggeriamo di dare un\'occhiata a questo topic per muovere i primi passi: 👉 [url=https://shareisland.org/forums/topics/1712]I primi passi su ShareIsland[/url].
+
+È molto importante che dedichi il tempo necessario per assimilare il Regolamento: è fondamentale che tutte le regole vengano rispettate scrupolosamente. Qui da noi la condivisione e il rispetto reciproco sono alla base di tutto!
+
+In caso di dubbi o domande non esitare ad aprire un thread nel [url=https://shareisland.org/forums/21]forum di aiuto[/url] o sul nostro server [url=https://discord.gg/DV7hBkyEzD]Discord[/url].
+
+❤️ Lo Staff di ShareIsland',
 ];
+

@@ -44,6 +44,7 @@ return [
                     base_path('storage/backups'),
                     base_path('public/vendor'),
                     base_path('public/build'),
+                    base_path('unit3d-announce/target'),
                 ],
 
                 /*
@@ -214,12 +215,12 @@ return [
      */
     'notifications' => [
         'notifications' => [
-            Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class         => ['mail'],
-            Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['mail'],
-            Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class        => ['mail'],
-            Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class     => ['mail'],
-            Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class   => ['mail'],
-            Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class    => ['mail'],
+            Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class         => ['mail', 'discord'],
+            Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['mail', 'discord'],
+            Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class        => ['mail', 'discord'],
+            //Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class     => ['discord'],
+            //Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class   => ['discord'],
+            //Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class    => ['discord'],
         ],
 
         /*
@@ -238,7 +239,7 @@ return [
         ],
 
         'slack' => [
-            'webhook_url' => '',
+            'webhook_url' => env('SLACK_WEBHOOK_URL', ''),
 
             /*
              * If this is set to null the default channel of the webhook will be used.
@@ -251,7 +252,7 @@ return [
         ],
 
         'discord' => [
-            'webhook_url' => '',
+            'webhook_url' => env('DISCORD_WEBHOOK_URL', ''),
 
             /*
              * If this is an empty string, the name field on the webhook will be used.
@@ -341,7 +342,7 @@ return [
              * this amount of megabytes has been reached.
              * Set null for unlimited size.
              */
-            'delete_oldest_backups_when_using_more_megabytes_than' => 5000,
+            'delete_oldest_backups_when_using_more_megabytes_than' => 30000,
         ],
 
         /*
