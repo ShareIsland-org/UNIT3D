@@ -36,6 +36,9 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        // TrustProxies e' disabilitato intenzionalmente: nginx risolve gia' REMOTE_ADDR
+        // tramite ngx_http_realip_module + CF-Connecting-IP. Abilitarlo con $proxies='*'
+        // permetterebbe IP spoofing via X-Forwarded-For. Vedere TrustProxies.php.
         //\App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         Middleware\BlockIpAddress::class,

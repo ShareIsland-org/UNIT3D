@@ -24,6 +24,20 @@ class TrustProxies extends Middleware
     /**
      * The trusted proxies for this application.
      *
+     * NOTA: questo middleware e' deliberatamente disabilitato in Kernel.php.
+     *
+     * Il setup attuale e' Cloudflare -> nginx -> PHP-FPM (FastCGI).
+     * Nginx risolve l'IP reale del client tramite il modulo ngx_http_realip_module
+     * (real_ip_header CF-Connecting-IP, set_real_ip_from [IP Cloudflare]) e passa
+     * il valore corretto a PHP come REMOTE_ADDR via fastcgi_param.
+     * Laravel riceve quindi il vero IP del client in REMOTE_ADDR senza bisogno
+     * di leggere X-Forwarded-For.
+     *
+     * Abilitare TrustProxies con $proxies = '*' sarebbe un rischio di sicurezza:
+     * qualunque client potrebbe falsificare il proprio IP tramite X-Forwarded-For.
+     * Se in futuro si volesse abilitare, usare gli IP specifici di Cloudflare
+     * anziche' il wildcard '*'.
+     *
      * @var array<int, string>|string|null
      */
     protected $proxies = '*';
