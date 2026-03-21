@@ -1,0 +1,15 @@
+name = "connectivity-check"
+main = "index.js"
+compatibility_date = "2024-09-23"
+
+# Deploy:
+#   wrangler deploy
+#
+# Segreto (una sola volta, poi risiede in Cloudflare):
+#   wrangler secret put CONNECTIVITY_CHECK_KEY
+#
+# Rotta personalizzata (da configurare nel Cloudflare Dashboard o qui sotto):
+#
+# [[routes]]
+# pattern = "check.shareisland.org/*"
+# zone_name = "shareisland.org"
