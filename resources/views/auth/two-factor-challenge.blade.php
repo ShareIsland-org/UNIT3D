@@ -40,8 +40,8 @@
                     action="{{ route('two-factor.login') }}"
                 >
                     @csrf
-		    <a class="auth-form__branding" href="{{ route('home.index') }}">
-			<img src="{{ url('/img/login-logo.png') }}" style="height: auto; width:100%;">
+		            <a class="auth-form__branding" href="{{ route('home.index') }}">
+						<img class="auth-form__logo" src="{{ url('/img/login-logo.png') }}">
                     </a>
                     <ul class="auth-form__important-infos">
                         <li class="auth-form__important-info" x-show="!recovery">
