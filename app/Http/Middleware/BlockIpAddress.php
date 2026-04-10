@@ -30,7 +30,10 @@ class BlockIpAddress
         $ipAddresses = cache()->flexible(
             'blocked-ips',
             [8 * 3600, 9 * 3600],
-            fn () => BlockedIp::query()->pluck('ip_address')->toArray()
+            fn () => BlockedIp::query()
+                ->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()))
+                ->pluck('ip_address')
+                ->toArray()
         );
 
         if (\in_array($request->getClientIp(), $ipAddresses)) {
