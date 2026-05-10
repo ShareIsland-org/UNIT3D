@@ -570,6 +570,12 @@ Route::middleware('language')->group(function (): void {
                 Route::patch('/', [App\Http\Controllers\User\RsskeyController::class, 'update'])->name('update');
             });
 
+            // Irckey
+            Route::prefix('irckeys')->name('irckeys.')->group(function (): void {
+                Route::get('/', [App\Http\Controllers\User\IrckeyController::class, 'index'])->name('index');
+                Route::patch('/', [App\Http\Controllers\User\IrckeyController::class, 'update'])->name('update');
+            });
+
             // Apikey
             Route::prefix('apikeys')->name('apikeys.')->group(function (): void {
                 Route::get('/', [App\Http\Controllers\User\ApikeyController::class, 'index'])->name('index');

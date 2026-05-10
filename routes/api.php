@@ -37,6 +37,11 @@ if (config('unit3d.proxy_scheme')) {
 if (config('unit3d.root_url_override')) {
     URL::forceRootUrl(config('unit3d.root_url_override'));
 }
+Route::post('/internal/irc/auth', App\Http\Controllers\API\Internal\IrcAuthController::class)
+    ->middleware(App\Http\Middleware\ValidateInternalIrcBearerToken::class)
+    ->name('api.internal.irc.auth')
+    ->withoutMiddleware('throttle:'.GlobalRateLimit::API->value);
+
 Route::middleware(['auth:'.AuthGuard::API->value, 'banned'])->group(function (): void {
     // Torrents System
     Route::prefix('torrents')->group(function (): void {

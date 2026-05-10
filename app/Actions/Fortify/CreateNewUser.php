@@ -74,6 +74,7 @@ class CreateNewUser implements CreatesNewUsers
             'password'   => Hash::make($input['password']),
             'passkey'    => md5(random_bytes(60)),
             'rsskey'     => md5(random_bytes(60)),
+            'irc_key'    => bin2hex(random_bytes(16)),
             'uploaded'   => config('other.default_upload'),
             'downloaded' => config('other.default_download'),
             'group_id'   => Group::query()->where('slug', '=', 'validating')->soleValue('id'),
@@ -82,6 +83,8 @@ class CreateNewUser implements CreatesNewUsers
         $user->passkeys()->create(['content' => $user->passkey]);
 
         $user->rsskeys()->create(['content' => $user->rsskey]);
+
+        $user->irckeys()->create(['content' => $user->irc_key]);
 
         $user->emailUpdates()->create();
 
