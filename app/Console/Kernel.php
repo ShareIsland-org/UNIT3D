@@ -108,7 +108,10 @@ class Kernel extends ConsoleKernel
         $schedule->command(AutoSyncPeopleToMeilisearch::class)->daily();
         $schedule->command(AutoRemoveExpiredDonors::class)->daily();
         $schedule->command(AutoRemoveReseeds::class)->daily();
-        $schedule->command(AutoAddReseeds::class)->daily();
+        // TODO: disabilitato in attesa di implementare un limite per batch/chunk.
+        // La prima esecuzione notificherebbe gli utenti una volta per ogni torrent morto
+        // (~28k su ShareIsland), causando un flood di notifiche.
+        // $schedule->command(AutoAddReseeds::class)->daily();
         // $schedule->command(AutoBanDisposableUsers::class)->weekends();
         $schedule->command(CleanupCommand::class)->daily();
         $schedule->command(BackupCommand::class, ['--only-db'])->daily();
