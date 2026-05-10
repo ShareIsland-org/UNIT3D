@@ -21,10 +21,35 @@
             <p>{{ config('donation.description') }}</p>
             <div class="donation-packages">
                 @foreach ($packages as $package)
+                    @php
+                        // Assegnazione colore in base al nome del pacchetto
+                        $packageName = strtolower($package->name);
+                        switch ($packageName) {
+                            case 'iron':
+                                $color = '#a19d94'; // Grigio ferro
+                                break;
+                            case 'bronze':
+                                $color = '#cd7f32'; // Bronzo
+                                break;
+                            case 'silver':
+                                $color = '#c0c0c0'; // Argento
+                                break;
+                            case 'gold':
+                                $color = '#ffd700'; // Oro
+                                break;
+                            case 'platinum':
+                                $color = '#e5e4e2'; // Platino
+                                break;
+                            default:
+                                $color = 'inherit';
+                        }
+                    @endphp
                     <div class="donation-package__wrapper">
                         <div class="donation-package">
                             <div class="donation-package__header">
-                                <div class="donation-package__name">{{ $package->name }}</div>
+                                <div class="donation-package__name" style="color: {{ $color }}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                                    {{ $package->name }}
+                                </div>
                                 <div class="donation-package__price-days">
                                     <span class="donation-package__price">
                                         {{ $package->cost }} {{ config('donation.currency') }}
@@ -34,7 +59,7 @@
                                         @if ($package->donor_value === null)
                                             Lifetime
                                         @else
-                                            {{ $package->donor_value }} days
+                                            {{ $package->donor_value }} Days
                                         @endif
                                     </span>
                                 </div>
@@ -45,54 +70,50 @@
                             <div class="donation-package__benefits-list">
                                 <ol class="benefits-list">
                                     @if ($package->donor_value === null)
-                                        <li>Unlimited download slots</li>
+                                        <li>Illimitati slot di Download</li>
                                     @endif
 
                                     @if ($package->donor_value === null)
-                                        <li>Custom user icon</li>
+                                        <li>Custom User Icon</li>
                                     @endif
 
-                                    <li>Global freeleech</li>
-                                    <li>Immunity to automated warnings (don't abuse)</li>
+                                    <li>Freeleech globale</li>
+									<li>Accesso al Server OnDemand (PLEX, JELLYFIN)</li>
                                     <li
                                         style="
                                             background-image: url(/img/sparkels.gif);
                                             width: auto;
                                         "
                                     >
-                                        Sparkle effect on username
+                                        Username scintillante 
                                     </li>
                                     <li>
-                                        Donor star by username
+                                        Username con la stella del donatore
                                         @if ($package->donor_value === null)
                                             <i
                                                 id="lifeline"
                                                 class="fal fa-star"
-                                                title="Lifetime donor"
+                                                title="Lifetime Donor"
                                             ></i>
                                         @else
                                             <i class="fal fa-star text-gold" title="Donor"></i>
                                         @endif
                                     </li>
-                                    <li>
-                                        Warm fuzzy feeling by supporting
-                                        {{ config('other.title') }}
-                                    </li>
                                     @if ($package->upload_value !== null)
                                         <li>
                                             {{ App\Helpers\StringHelper::formatBytes($package->upload_value) }}
-                                            Upload credit
+                                            in credito di upload
                                         </li>
                                     @endif
 
                                     @if ($package->bonus_value !== null)
                                         <li>
-                                            {{ number_format($package->bonus_value) }} bonus points
+                                            {{ number_format($package->bonus_value) }} Bonus Points
                                         </li>
                                     @endif
 
                                     @if ($package->invite_value !== null)
-                                        <li>{{ $package->invite_value }} invites</li>
+                                        <li>{{ $package->invite_value }} Inviti</li>
                                     @endif
                                 </ol>
                             </div>
@@ -124,7 +145,7 @@
                 >
                     @csrf
                     <span class="text-success text-center">
-                        Per effettuare una donazione è necessario completare i seguenti passaggi:
+                        Per effettuare una donazione scegli il metodo, invia il pagamento su paypal o nel tuo wallet e inserisci qui l'ID della transazione per la conferma manuale:
                     </span>
                     <div class="form__group--horizontal">
                         @foreach ($gateways->sortBy('position') as $gateway)
@@ -146,27 +167,16 @@
                             </p>
                         @endforeach
 
+                        <div class="text-center" style="margin: 10px 0; font-size: 0.9em;">
+                            <span style="color: #5da2ff;">Donazioni PayPal:</span> inviare esclusivamente come <span style="color: #ff0000; font-weight: bold;">AMICI</span>
+                        </div>
+
                         <p class="text-info">
-                            Invia
-                            <strong>
-                                {{ $package->cost }} {{ config('donation.currency') }}
-                            </strong>
-                            al gateway di tua scelta. Prendi nota dell'hash, del numero di ricevuta o altro per farti riconoscere e inseriscilo di seguito.
+                            Inserisci l'<strong>ID transazione</strong> o l'<strong>hash</strong> per la verifica. 
+                            <span style="color: #ff0000; font-weight: bold;">NON inserire</span> i nostri indirizzi PayPal o Wallet.
                         </p>
                     </div>
                     <div class="form__group--horizontal">
-                        <!-- <p class="form__group">
-                            <input
-                                class="form__text"
-                                type="text"
-                                disabled
-                                value="{{ $package->cost }}"
-                                id="package-cost"
-                            />
-                            <label for="package-cost" class="form__label form__label--floating">
-                                Cost
-                            </label>
-                        </p> -->
                         <p class="form__group">
                             <input
                                 class="form__text"
