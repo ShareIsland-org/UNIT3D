@@ -118,7 +118,7 @@ class IRCAnnounceBotExternal
             return false;
         }
 
-        if (! $response->ok()) {
+        if (! $response->successful()) {
             Log::notice('External IRC Announce error - POST', [
                 'status' => $response->status(),
                 'body'   => $response->body(),
@@ -162,7 +162,8 @@ class IRCAnnounceBotExternal
 
     private static function buildHttpClient(): \Illuminate\Http\Client\PendingRequest
     {
-        $client = Http::createPendingRequest();
+        $client = Http::createPendingRequest()
+            ->withHeader('X-API-Token', config('irc-bot-external.key'));
 
         if (config('irc-bot-external.unix_socket') !== null) {
             $client->withOptions([

@@ -161,6 +161,14 @@
                     {{ __('user.rsskey') }}
                 </a>
             </li>
+            <li class="{{ Route::is('users.irckeys.index') ? 'nav-tab--active' : 'nav-tavV2' }}">
+                <a
+                    class="{{ Route::is('users.irckeys.index') ? 'nav-tab--active__link' : 'nav-tab__link' }}"
+                    href="{{ route('users.irckeys.index', ['user' => $user]) }}"
+                >
+                    {{ __('user.irckey') }}
+                </a>
+            </li>
             <li class="{{ Route::is('users.apikeys.index') ? 'nav-tab--active' : 'nav-tavV2' }}">
                 <a
                     class="{{ Route::is('users.apikeys.index') ? 'nav-tab--active__link' : 'nav-tab__link' }}"

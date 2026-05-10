@@ -58,6 +58,7 @@ use AllowDynamicProperties;
  * @property int                             $invites
  * @property int                             $hitandruns
  * @property string                          $rsskey
+ * @property string                          $irc_key
  * @property int                             $chatroom_id
  * @property int                             $read_rules
  * @property bool                            $can_chat
@@ -103,6 +104,7 @@ final class User extends Authenticatable implements MustVerifyEmail
         'password',
         'passkey',
         'rsskey',
+        'irc_key',
         'remember_token',
         'api_token',
         'two_factor_secret',
@@ -928,6 +930,16 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function rsskeys(): HasMany
     {
         return $this->hasMany(Rsskey::class);
+    }
+
+    /**
+     * Get the irckeys for the user.
+     *
+     * @return HasMany<Irckey, $this>
+     */
+    public function irckeys(): HasMany
+    {
+        return $this->hasMany(Irckey::class);
     }
 
     /**
