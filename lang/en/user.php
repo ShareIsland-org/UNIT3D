@@ -72,6 +72,8 @@ return [
     'change-password'           => 'Change password',
     'change-password-help'      => 'You will have to login again, after you change your password',
     'client-connectable-state'  => '{0}No|{1}Yes',
+    'connectable'               => 'Connectable',
+    'not-connectable'           => 'Not connectable',
     'client-list'               => 'Clients and IP-addresses',
     'client-ip-address'         => 'Client IP address',
     'code'                      => 'Code',
