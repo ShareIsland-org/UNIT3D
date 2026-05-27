@@ -37,7 +37,8 @@ class BonController extends BaseController
      * {
      *   "recipient_username": "mario",
      *   "bon": 100,
-     *   "message": "Great quiz answer!"
+     *   "message": "Great quiz answer!",
+     *   "irc_sender": "Mario"  // optional — IRC nick of the real sender, prepended to the message
      * }
      */
     final public function gift(Request $request): JsonResponse
@@ -62,6 +63,11 @@ class BonController extends BaseController
                 'string',
                 'max:255',
             ],
+            'irc_sender' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
         ]);
 
         $recipient = User::where('username', '=', $validated['recipient_username'])->sole();
@@ -74,7 +80,9 @@ class BonController extends BaseController
                 'bon'          => $validated['bon'],
                 'sender_id'    => $sender->id,
                 'recipient_id' => $recipient->id,
-                'message'      => $validated['message'],
+                'message'      => isset($validated['irc_sender'])
+                    ? '[IRC tip da '.$validated['irc_sender'].'] '.$validated['message']
+                    : $validated['message'],
             ]);
 
             // Internal site notification — recipient sees the alert
