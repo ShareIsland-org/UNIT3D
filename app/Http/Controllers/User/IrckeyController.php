@@ -29,7 +29,12 @@ class IrckeyController extends Controller
      */
     public function index(Request $request, User $user): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
     {
-        abort_unless($request->user()->is($user) || $request->user()->group->is_modo, 403);
+        $betaUsernames = config('irc-auth.beta_usernames', []);
+        $isBeta = empty($betaUsernames) || \in_array($user->username, $betaUsernames, true);
+        abort_unless(
+            ($request->user()->is($user) && $isBeta) || $request->user()->group->is_modo,
+            403
+        );
 
         return view('user.irckey.index', [
             'user'    => $user,
@@ -42,7 +47,12 @@ class IrckeyController extends Controller
      */
     protected function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
     {
-        abort_unless($request->user()->is($user) || $request->user()->group->is_modo, 403);
+        $betaUsernames = config('irc-auth.beta_usernames', []);
+        $isBeta = empty($betaUsernames) || \in_array($user->username, $betaUsernames, true);
+        abort_unless(
+            ($request->user()->is($user) && $isBeta) || $request->user()->group->is_modo,
+            403
+        );
 
         $changedByStaff = $request->user()->isNot($user);
 

@@ -264,6 +264,15 @@
                                                 ></i>
                                             </a>
                                         </address>
+                                        <template x-if="message.source === 'irc'">
+                                            <span
+                                                class="chatbox-message__irc-badge"
+                                                :title="'Via IRC' + (message.remote_nick ? ' (' + message.remote_nick + ')' : '')"
+                                            >
+                                                <i class="fas fa-hashtag"></i>
+                                                IRC
+                                            </span>
+                                        </template>
                                         <div
                                             x-show="message.bot && message.bot.id >= 1 && (! message.user || message.user.id < 2)"
                                             class="bbcode-rendered bot-message"

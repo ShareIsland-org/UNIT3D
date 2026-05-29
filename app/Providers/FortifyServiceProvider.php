@@ -230,7 +230,7 @@ class FortifyServiceProvider extends ServiceProvider
                 $user->load('group:id,slug');
 
                 // Check if user is activated
-                if ($user->email_verified_at === null || $user->group->slug === 'validating') {
+                if ($user->group->slug === 'validating') {
                     $request->session()->invalidate();
 
                     throw ValidationException::withMessages([

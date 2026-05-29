@@ -37,9 +37,18 @@ if (config('unit3d.proxy_scheme')) {
 if (config('unit3d.root_url_override')) {
     URL::forceRootUrl(config('unit3d.root_url_override'));
 }
+
 Route::post('/internal/irc/auth', App\Http\Controllers\API\Internal\IrcAuthController::class)
     ->middleware(App\Http\Middleware\ValidateInternalIrcBearerToken::class)
     ->name('api.internal.irc.auth')
+    ->withoutMiddleware('throttle:'.GlobalRateLimit::API->value);
+
+Route::post('/internal/irc/bridge/inbound', App\Http\Controllers\API\Internal\IrcBridgeInboundController::class)
+    ->middleware([
+        App\Http\Middleware\ValidateInternalIrcBridgeBearerToken::class,
+        'throttle:'.GlobalRateLimit::IRC_BRIDGE->value,
+    ])
+    ->name('api.internal.irc.bridge.inbound')
     ->withoutMiddleware('throttle:'.GlobalRateLimit::API->value);
 
 Route::middleware(['auth:'.AuthGuard::API->value, 'banned'])->group(function (): void {
@@ -53,8 +62,8 @@ Route::middleware(['auth:'.AuthGuard::API->value, 'banned'])->group(function ():
 
     // Requests System
     Route::prefix('requests')->group(function (): void {
-        Route::get('/filter', [App\Http\Controllers\API\TorrentRequestController::class, 'filter']);
-        Route::get('/{id}', [App\Http\Controllers\API\TorrentRequestController::class, 'show'])->where('id', '[0-9]+');
+        Route::get('/filter', [App\Http\Controllers\API\RequestController::class, 'filter']);
+        Route::get('/{id}', [App\Http\Controllers\API\RequestController::class, 'show'])->where('id', '[0-9]+');
     });
 
     // User
@@ -75,3 +84,4 @@ Route::name('api.')->middleware([MiddlewareGroup::WEB->value, 'auth', 'banned', 
 
     Route::get('/quicksearch', [App\Http\Controllers\API\QuickSearchController::class, 'index'])->name('quicksearch')->middleware('throttle:'.GlobalRateLimit::SEARCH->value)->withoutMiddleware('throttle:'.GlobalRateLimit::WEB->value);
 });
+
