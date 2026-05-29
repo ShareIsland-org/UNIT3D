@@ -24,6 +24,7 @@ enum GlobalRateLimit: string
     case CHAT = 'chat';
     case FORGOT_PASSWORD = 'forgot-password';
     case IGDB = 'igdb';
+    case IRC_BRIDGE = 'irc-bridge';
     case RESET_PASSWORD = 'reset-password';
     case RSS = 'rss';
     case SEARCH = 'search';

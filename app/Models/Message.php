@@ -18,8 +18,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use AllowDynamicProperties;
 
 /**
  * App\Models\Message.
@@ -33,8 +31,7 @@ use AllowDynamicProperties;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  */
-#[AllowDynamicProperties]
-final class Message extends Model
+class Message extends Model
 {
     /** @use HasFactory<\Database\Factories\MessageFactory> */
     use HasFactory;
@@ -53,42 +50,52 @@ final class Message extends Model
     ];
 
     /**
-     * Get the bot that sent the message.
+     * Belongs To A Bot.
      *
-     * @return BelongsTo<Bot, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Bot, $this>
      */
-    public function bot(): BelongsTo
+    public function bot(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Bot::class);
     }
 
     /**
-     * Get the user that sent the message.
+     * Belongs To A User.
      *
-     * @return BelongsTo<User, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, $this>
      */
-    public function user(): BelongsTo
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * Get the user that received the message.
+     * A message belongs to a receiver.
      *
-     * @return BelongsTo<User, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, $this>
      */
-    public function receiver(): BelongsTo
+    public function receiver(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
     /**
-     * Get the chatroom the message was sent in.
+     * Belongs To A Chat Room.
      *
-     * @return BelongsTo<Chatroom, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Chatroom, $this>
      */
-    public function chatroom(): BelongsTo
+    public function chatroom(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Chatroom::class);
+    }
+
+    /**
+     * The associated IRC bridge ledger row.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<IrcBridgeMessage, $this>
+     */
+    public function ircBridgeMessage(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(IrcBridgeMessage::class, 'local_message_id');
     }
 }

@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'is_enabled' => false,
+    'is_enabled' => env('IRC_ANNOUNCE_EXTERNAL_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------

@@ -30,18 +30,14 @@ class MessageSent implements ShouldBroadcastNow
     use InteractsWithSockets;
     use SerializesModels;
 
-    /**
-     * Message details.
-     */
     public ChatMessageResource $message;
 
-    /**
-     * Create a new event instance.
-     */
     public function __construct(Message $message)
     {
         $message = Message::with([
             'bot',
+            'chatroom',
+            'ircBridgeMessage',
             'user.group',
             'user.chatStatus',
             'receiver.group',
@@ -51,13 +47,8 @@ class MessageSent implements ShouldBroadcastNow
         $this->message = new ChatMessageResource($message);
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     */
     public function broadcastOn(): PresenceChannel
     {
-        // $this->dontBroadcastToCurrentUser();
-
         return new PresenceChannel('chatroom.'.$this->message->chatroom_id);
     }
 

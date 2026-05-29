@@ -95,6 +95,7 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for(GlobalRateLimit::AUTHENTICATED_IMAGES, fn (Request $request): Limit => Limit::perMinute(200)->by('authenticated-images:'.$request->user()->id));
         RateLimiter::for(GlobalRateLimit::SEARCH, fn (Request $request): Limit => Limit::perMinute(100)->by('search:'.$request->user()->id));
         RateLimiter::for(GlobalRateLimit::TMDB, fn (): Limit => Limit::perSecond(2));
+        RateLimiter::for(GlobalRateLimit::IRC_BRIDGE, fn (Request $request) => Limit::perMinute(300)->by('irc-bridge:'.$request->ip()));
         RateLimiter::for(GlobalRateLimit::IGDB, fn (): Limit => Limit::perSecond(2));
         RateLimiter::for(GlobalRateLimit::FORGOT_PASSWORD, fn (Request $request) => Limit::perMinute(5)->by('forgot-password'.$request->ip()));
         RateLimiter::for(GlobalRateLimit::RESET_PASSWORD, fn (Request $request) => Limit::perMinute(5)->by('reset-password'.$request->ip()));

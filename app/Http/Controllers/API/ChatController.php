@@ -34,8 +34,10 @@ use App\Models\User;
 use App\Models\UserAudible;
 use App\Models\UserEcho;
 use App\Repositories\ChatRepository;
+use App\Services\IrcBridge\IrcGeneralOutboundBridgeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Throwable;
 
 /**
  * @see \Tests\Feature\Http\Controllers\API\ChatControllerTest
@@ -45,8 +47,10 @@ class ChatController extends Controller
     /**
      * ChatController Constructor.
      */
-    public function __construct(private readonly ChatRepository $chatRepository)
-    {
+    public function __construct(
+        private readonly ChatRepository $chatRepository,
+        private readonly IrcGeneralOutboundBridgeService $ircGeneralOutboundBridgeService,
+    ) {
     }
 
     /* STATUSES */
@@ -272,7 +276,23 @@ class ChatController extends Controller
         $botId = null;
         $message = $this->chatRepository->message($userId, $roomId, $message, $receiverId, $botId);
 
-        return response('success');
+        if ($this->shouldBridgeGeneralRoomMessage($user, $message)) {
+            try {
+                $this->ircGeneralOutboundBridgeService->bridge($message);
+            } catch (Throwable $throwable) {
+                report($throwable);
+            }
+        }
+
+        return new ChatMessageResource($message);
+    }
+
+    private function shouldBridgeGeneralRoomMessage(User $user, Message $message): bool
+    {
+        return $message->receiver_id === null
+            && $message->bot_id === null
+            && $message->chatroom_id === (int) config('irc-bridge.general.chatroom_id', 1)
+            && $user->username !== (string) config('irc-bridge.general.own_nick', 'ShareLink');
     }
 
     public function deleteMessage(Request $request, int $id): \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response

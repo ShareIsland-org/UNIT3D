@@ -20,39 +20,61 @@ use App\Events\Chatter;
 use App\Events\MessageSent;
 use App\Http\Resources\ChatMessageResource;
 use App\Models\Bot;
+use App\Models\IrcBridgeMessage;
 use App\Models\Chatroom;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\IrcBridge\IrcBridgeFoundationService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ChatRepository
 {
+    public function __construct(private readonly IrcBridgeFoundationService $bridgeFoundationService)
+    {
+    }
+
     public function message(int $userId, int $roomId, string $message, ?int $receiver = null, ?int $bot = null): Message
     {
-        if (User::find($userId)->settings->censor) {
+        $user = User::findOrFail($userId);
+
+        if ($this->userCensorsMessages($user)) {
             $message = $this->censorMessage($message);
         }
 
-        $message = Message::create([
-            'user_id'     => $userId,
-            'chatroom_id' => $roomId,
-            'message'     => $message,
-            'receiver_id' => $receiver,
-            'bot_id'      => $bot,
-        ]);
-
-        $this->checkMessageLimits($roomId);
+        $message = $this->createPublicMessageRecord($userId, $roomId, $message, $receiver, $bot);
+        $message = $this->loadBroadcastableMessage($message->id);
 
         broadcast(new MessageSent($message));
 
         return $message;
     }
 
+    public function bridgedInboundMessage(User $user, int $roomId, string $message, IrcBridgeMessage $bridgeMessage): Message
+    {
+        return DB::transaction(function () use ($user, $roomId, $message, $bridgeMessage): Message {
+            if ($this->userCensorsMessages($user)) {
+                $message = $this->censorMessage($message);
+            }
+
+            $persistedMessage = $this->createPublicMessageRecord($user->id, $roomId, $message);
+            $this->bridgeFoundationService->linkLocalMessage($bridgeMessage, $persistedMessage);
+            $broadcastableMessage = $this->loadBroadcastableMessage($persistedMessage->id);
+
+            DB::afterCommit(static function () use ($broadcastableMessage): void {
+                broadcast(new MessageSent($broadcastableMessage));
+            });
+
+            return $broadcastableMessage;
+        });
+    }
+
     public function botMessage(int $botId, int $roomId, string $message, ?int $receiver = null): void
     {
         $user = User::find($receiver);
 
-        if ($user->settings->censor) {
+        if ($this->userCensorsMessages($user)) {
             $message = $this->censorMessage($message);
         }
 
@@ -77,7 +99,7 @@ class ChatRepository
 
     public function privateMessage(int $userId, int $roomId, string $message, ?int $receiver = null, ?int $bot = null, ?bool $ignore = null): Message
     {
-        if (User::find($userId)->settings->censor) {
+        if ($this->userCensorsMessages(User::findOrFail($userId))) {
             $message = $this->censorMessage($message);
         }
 
@@ -119,6 +141,7 @@ class ChatRepository
             ->with([
                 'bot',
                 'chatroom',
+                'ircBridgeMessage',
                 'user'     => ['group', 'chatStatus'],
                 'receiver' => ['group', 'chatStatus'],
             ])
@@ -138,6 +161,7 @@ class ChatRepository
             ->with([
                 'bot',
                 'chatroom',
+                'ircBridgeMessage',
                 'user'     => ['group', 'chatStatus'],
                 'receiver' => ['group', 'chatStatus'],
             ])
@@ -170,6 +194,7 @@ class ChatRepository
             ->with([
                 'bot',
                 'chatroom',
+                'ircBridgeMessage',
                 'user'     => ['group', 'chatStatus'],
                 'receiver' => ['group', 'chatStatus'],
             ])
@@ -213,6 +238,34 @@ class ChatRepository
         }
     }
 
+    private function createPublicMessageRecord(int $userId, int $roomId, string $message, ?int $receiver = null, ?int $bot = null): Message
+    {
+        $message = Message::create([
+            'user_id'     => $userId,
+            'chatroom_id' => $roomId,
+            'message'     => $message,
+            'receiver_id' => $receiver,
+            'bot_id'      => $bot,
+        ]);
+
+        $this->checkMessageLimits($roomId);
+
+        return $message;
+    }
+
+    private function loadBroadcastableMessage(int $messageId): Message
+    {
+        return Message::query()
+            ->with([
+                'bot',
+                'chatroom',
+                'ircBridgeMessage',
+                'user'     => ['group', 'chatStatus'],
+                'receiver' => ['group', 'chatStatus'],
+            ])
+            ->findOrFail($messageId);
+    }
+
     public function systemMessage(string $message, ?int $bot = null): static
     {
         if ($bot) {
@@ -245,6 +298,15 @@ class ChatRepository
         }
 
         return $room;
+    }
+
+    private function userCensorsMessages(User $user): bool
+    {
+        if (!Schema::hasTable('user_settings')) {
+            return false;
+        }
+
+        return (bool) $user->settings->censor;
     }
 
     protected function censorMessage(string $message): string
