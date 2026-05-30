@@ -364,7 +364,15 @@
                     </a>
                 </li>
             @endif
-
+            <li>
+                <a
+                    class="top-nav--right__icon-link"
+                    href="https://shareisland.org/wikis/41"
+                    title="{{ $isConnectable ? __('user.connectable') : __('user.not-connectable') }}"
+                >
+                    <i class="{{ config('other.font-awesome') }} fa-network-wired {{ $isConnectable ? 'top-nav__connectable--yes' : 'top-nav__connectable--no' }}"></i>
+                </a>
+            </li>
             <li>
                 <a
                     class="top-nav--right__icon-link"
