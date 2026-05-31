@@ -488,3 +488,20 @@
         display: flex;
     }
 }
+
+/* Connectable badge
+******************************************************************************/
+
+.top-nav__connectable--yes {
+    color: #00bc8c !important;
+}
+
+.top-nav__connectable--no {
+    color: #ff4373 !important;
+    animation: connectable-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes connectable-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.2; }
+}

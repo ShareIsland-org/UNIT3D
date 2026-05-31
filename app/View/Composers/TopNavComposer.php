@@ -85,6 +85,16 @@ class TopNavComposer
                 ->exists(),
             'hasUnreadPm'           => $user->participations()->where('read', '=', false)->exists(),
             'hasUnreadNotification' => $user->unreadNotifications()->exists(),
+            'isConnectable' => cache()->flexible(
+                "users:{$user->id}:is-connectable",
+                [60, 60 * 2],
+                fn () => $user->peers()->where('active', '=', 1)->where('connectable', '=', true)->exists(),
+            ),
+            'hasPeers' => cache()->flexible(
+                "users:{$user->id}:has-peers",
+                [60, 60 * 2],
+                fn () => $user->peers()->where('active', '=', 1)->exists(),
+            ),
             'uploadCount'           => cache()->flexible(
                 "users:{$user->id}:upload-count",
                 [60, 60 * 2],
