@@ -183,12 +183,12 @@
 
                             <div style="display: grid; gap: 0.5rem">
                                 <div>
-                                    <strong>{{ trans_choice('{0} No changed fields|{1} :count changed field|[2,*] :count changed fields', $changedFields->count()) }}</strong>
+                                    <strong>{{ trans_choice('staff.changed-fields', $changedFields->count()) }}</strong>
 
                                     @if ($unchangedFields->isNotEmpty())
                                         <span style="opacity: 0.75">
                                             &middot;
-                                            {{ trans_choice('{1} :count unchanged field hidden|[2,*] :count unchanged fields hidden', $unchangedFields->count()) }}
+                                            {{ trans_choice('staff.unchanged-fields-hidden', $unchangedFields->count()) }}
                                         </span>
                                     @endif
                                 </div>
@@ -198,9 +198,9 @@
                                         <table class="data-table" style="table-layout: fixed; min-width: 640px">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 12rem">Field</th>
-                                                    <th>Old value</th>
-                                                    <th>New value</th>
+                                                    <th style="width: 12rem">{{ __('staff.field') }}</th>
+                                                    <th>{{ __('staff.old-value') }}</th>
+                                                    <th>{{ __('staff.new-value') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -242,7 +242,9 @@
 
                                 @if ($unchangedFields->isNotEmpty())
                                     <details>
-                                        <summary style="cursor: pointer">Show unchanged fields</summary>
+                                        <summary style="cursor: pointer">
+                                            {{ __('staff.show-unchanged-fields') }}
+                                        </summary>
                                         <p style="margin-bottom: 0; word-break: break-word">
                                             @foreach ($unchangedFields as $unchangedField)
                                                 <code>{{ $unchangedField['field'] }}</code>@if (! $loop->last), @endif
