@@ -1,3 +1,57 @@
+@php
+    $stringifyAuditValue = static function (mixed $value): array {
+        if ($value === null) {
+            return [
+                'type' => 'null',
+                'full' => 'null',
+                'summary' => 'null',
+                'isLong' => false,
+            ];
+        }
+
+        if (is_bool($value)) {
+            return [
+                'type' => 'boolean',
+                'full' => $value ? 'true' : 'false',
+                'summary' => $value ? 'true' : 'false',
+                'isLong' => false,
+            ];
+        }
+
+        if (is_array($value)) {
+            $full = json_encode(
+                $value,
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR,
+            );
+
+            return [
+                'type' => 'json',
+                'full' => $full,
+                'summary' => count($value).' '.str('item')->plural(count($value)),
+                'isLong' => true,
+            ];
+        }
+
+        $full = (string) $value;
+        $summary = preg_replace('/\s+/', ' ', trim($full)) ?: ($full === '' ? 'empty string' : $full);
+
+        return [
+            'type' => get_debug_type($value),
+            'full' => $full,
+            'summary' => (string) str($summary)->limit(120),
+            'isLong' => str_contains($full, "\n") || str_contains($full, "\r") || str($full)->length() > 160,
+        ];
+    };
+
+    $auditValuesAreEqual = static fn (mixed $old, mixed $new): bool => json_encode(
+        $old,
+        JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR,
+    ) === json_encode(
+        $new,
+        JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR,
+    );
+@endphp
+
 <section class="panelV2">
     <header class="panel__header">
         <h2 class="panel__heading">{{ __('staff.audit-log') }}</h2>
@@ -109,23 +163,94 @@
                                 {{ $audit->user->username }}
                             </a>
                         </td>
-                        <td>
-                            <ul>
-                                @foreach ($audit->values as $key => $value)
-                                    <li
-                                        style="
-                                            word-wrap: break-word;
-                                            word-break: break-word;
-                                            overflow-wrap: break-word;
-                                        "
-                                    >
-                                        {{ $key }}:
-                                        {{ json_encode($value['old'], JSON_THROW_ON_ERROR) }}
-                                        &rarr;
-                                        {{ json_encode($value['new'], JSON_THROW_ON_ERROR) }}
-                                    </li>
-                                @endforeach
-                            </ul>
+                        <td style="min-width: 520px; max-width: 900px">
+                            @php
+                                $changes = collect($audit->values ?? [])
+                                    ->map(function ($value, $key) use ($auditValuesAreEqual, $stringifyAuditValue): array {
+                                        $old = is_array($value) && array_key_exists('old', $value) ? $value['old'] : null;
+                                        $new = is_array($value) && array_key_exists('new', $value) ? $value['new'] : null;
+
+                                        return [
+                                            'field' => $key,
+                                            'old' => $stringifyAuditValue($old),
+                                            'new' => $stringifyAuditValue($new),
+                                            'isChanged' => ! $auditValuesAreEqual($old, $new),
+                                        ];
+                                    });
+                                $changedFields = $changes->where('isChanged', true)->values();
+                                $unchangedFields = $changes->where('isChanged', false)->values();
+                            @endphp
+
+                            <div style="display: grid; gap: 0.5rem">
+                                <div>
+                                    <strong>{{ trans_choice('{0} No changed fields|{1} :count changed field|[2,*] :count changed fields', $changedFields->count()) }}</strong>
+
+                                    @if ($unchangedFields->isNotEmpty())
+                                        <span style="opacity: 0.75">
+                                            &middot;
+                                            {{ trans_choice('{1} :count unchanged field hidden|[2,*] :count unchanged fields hidden', $unchangedFields->count()) }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                @if ($changedFields->isNotEmpty())
+                                    <div style="max-height: 36rem; overflow: auto">
+                                        <table class="data-table" style="table-layout: fixed; min-width: 640px">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 12rem">Field</th>
+                                                    <th>Old value</th>
+                                                    <th>New value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($changedFields as $change)
+                                                    <tr>
+                                                        <td style="vertical-align: top">
+                                                            <code>{{ $change['field'] }}</code>
+                                                        </td>
+                                                        @foreach (['old' => 'text-red', 'new' => 'text-green'] as $side => $class)
+                                                            @php $formatted = $change[$side]; @endphp
+                                                            <td
+                                                                class="{{ $class }}"
+                                                                style="
+                                                                    vertical-align: top;
+                                                                    word-break: break-word;
+                                                                    overflow-wrap: anywhere;
+                                                                "
+                                                            >
+                                                                @if ($formatted['type'] === 'null')
+                                                                    <em style="opacity: 0.75">null</em>
+                                                                @elseif ($formatted['isLong'])
+                                                                    <details>
+                                                                        <summary style="cursor: pointer">
+                                                                            {{ $formatted['summary'] }}
+                                                                        </summary>
+                                                                        <pre style="white-space: pre-wrap; max-height: 24rem; overflow: auto; margin: 0.5rem 0 0"><code>{{ $formatted['full'] }}</code></pre>
+                                                                    </details>
+                                                                @else
+                                                                    <code style="white-space: pre-wrap">{{ $formatted['full'] }}</code>
+                                                                @endif
+                                                            </td>
+                                                        @endforeach
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+
+                                @if ($unchangedFields->isNotEmpty())
+                                    <details>
+                                        <summary style="cursor: pointer">Show unchanged fields</summary>
+                                        <p style="margin-bottom: 0; word-break: break-word">
+                                            @foreach ($unchangedFields as $unchangedField)
+                                                <code>{{ $unchangedField['field'] }}</code>@if (! $loop->last), @endif
+                                            @endforeach
+                                        </p>
+                                    </details>
+                                @endif
+                            </div>
                         </td>
                         <td>
                             <time
