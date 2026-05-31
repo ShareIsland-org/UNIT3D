@@ -535,6 +535,27 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        leaveBot(id) {
+            axios
+                .post(`/api/chat/echoes/delete/bot`, { bot_id: id })
+                .then((response) => {
+                    this.auth = response.data;
+                    document.getElementById('currentChatroom').value = '1';
+                    this.fetchRooms().then(() => {
+                        if (this.state.chat.tab) {
+                            this.changeTab('room', this.state.chat.tab);
+                        } else if (this.chatrooms.length > 0) {
+                            this.state.chat.room = this.chatrooms[0].id;
+                        } else {
+                            console.warn('No chat tabs or chatrooms available.');
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error leaving bot:', error);
+                });
+        },
+
         changeBot(id) {
             if (this.state.chat.bot !== id && id != 0) {
                 this.state.chat.bot = id;
