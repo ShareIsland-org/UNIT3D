@@ -90,6 +90,11 @@ class TopNavComposer
                 [60, 60 * 2],
                 fn () => $user->peers()->where('active', '=', 1)->where('connectable', '=', true)->exists(),
             ),
+            'hasPeers' => cache()->flexible(
+                "users:{$user->id}:has-peers",
+                [60, 60 * 2],
+                fn () => $user->peers()->where('active', '=', 1)->exists(),
+            ),
             'uploadCount'           => cache()->flexible(
                 "users:{$user->id}:upload-count",
                 [60, 60 * 2],
