@@ -25,7 +25,7 @@ final class UserProfileController extends BaseController
      *
      * GET /api/users/{username}
      */
-    public function show(string $username): JsonResponse
+    final public function show(string $username): JsonResponse
     {
         // Retrieve the user with the necessary relations
         $user = User::with(['privacy', 'group'])
