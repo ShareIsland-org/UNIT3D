@@ -15,6 +15,12 @@ declare(strict_types=1);
 
 return [
     'audit-log'                => 'Audit log',
+    'changed-fields'           => '{0} No changed fields|{1} :count changed field|[2,*] :count changed fields',
+    'field'                    => 'Field',
+    'new-value'                => 'New value',
+    'old-value'                => 'Old value',
+    'show-unchanged-fields'    => 'Show unchanged fields',
+    'unchanged-fields-hidden'  => '{1} :count unchanged field hidden|[2,*] :count unchanged fields hidden',
     'articles'                 => 'Articles',
     'application'              => 'Application',
     'applications'             => 'Applications',
