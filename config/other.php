@@ -207,6 +207,7 @@ return [
     | Example: 4
     */
     'upload-guide_url' => env('APP_URL').'/wikis/35',
+    'connectable_wiki_url' => env('APP_URL').'/wikis/41',
 
     /*
     |--------------------------------------------------------------------------

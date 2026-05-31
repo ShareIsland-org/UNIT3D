@@ -368,7 +368,7 @@
                 <li>
                     <a
                         class="top-nav--right__icon-link"
-                        href="https://shareisland.org/wikis/41"
+                        href="{{ config('other.connectable_wiki_url') }}"
                         title="{{ $isConnectable ? __('user.connectable') : __('user.not-connectable') }}"
                     >
                         <i class="{{ config('other.font-awesome') }} fa-network-wired {{ $isConnectable ? 'top-nav__connectable--yes' : 'top-nav__connectable--no' }}"></i>
