@@ -69,6 +69,7 @@ Route::middleware(['auth:'.AuthGuard::API->value, 'banned'])->group(function ():
     // User
     Route::get('/user', [App\Http\Controllers\API\UserController::class, 'show']);
     Route::get('/users/{username}', [App\Http\Controllers\API\UserProfileController::class, 'show'])->where('username', '[a-zA-Z0-9_\-\.]+');
+    Route::post('/gifts', [App\Http\Controllers\API\BonController::class, 'gift']);
 });
 
 // Internal front-end web API routes
