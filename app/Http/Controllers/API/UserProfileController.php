@@ -27,9 +27,14 @@ final class UserProfileController extends BaseController
      */
     final public function show(string $username): JsonResponse
     {
-        // Retrieve the user with the necessary relations
         $user = User::with(['privacy', 'group'])
-            ->withCount(['seedingTorrents', 'leechingTorrents'])
+            ->withCount([
+                'seedingTorrents',
+                'leechingTorrents',
+                // Non-anonymous uploads only, matching what the profile page shows
+                // to regular users in the public "Torrent count" section.
+                'torrents as non_anon_uploads_count' => fn ($q) => $q->where('anon', false),
+            ])
             ->where('username', $username)
             ->first();
 
@@ -38,32 +43,43 @@ final class UserProfileController extends BaseController
             return $this->sendError('User not found.', [], 404);
         }
 
-        // Fully hidden profile (hidden = true)
-        // isVisible() with only the target and no type checks the hidden flag
-        if (!auth()->user()->isVisible($user)) {
+        // Block if the user is completely hidden (hidden = true) or has set their profile
+        // to private (private_profile = 1). These are two distinct flags: isVisible() covers
+        // the former, isAllowed() covers the latter.
+        if (!auth()->user()->isVisible($user) || !auth()->user()->isAllowed($user)) {
             return $this->sendError('This profile is private.', [], 403);
         }
 
-        // Helper: returns the value if the privacy field is visible,
-        // otherwise the string "private".
-        // isVisible($target, $group, $type) checks $target->privacy->$type
-        $v = fn (string $type, mixed $value) => auth()->user()->isVisible($user, 'profile', $type)
+        // Returns $value if the given profile privacy field is enabled, otherwise 'private'.
+        // Uses isAllowed() with the profile-specific field names that the profile page uses,
+        // so API behaviour matches what is visible on the site.
+        $v = fn (string $type, mixed $value) => auth()->user()->isAllowed($user, 'profile', $type)
             ? $value
             : 'private';
 
         return $this->sendResponse([
-            // Base data — always visible if the profile is not hidden
-            'username'     => $user->username,
-            'group'        => $user->group->name,
+            // Always visible if the profile is not blocked above.
+            'username'    => $user->username,
+            'group'       => $user->group->name,
+            'profile_url' => route('users.show', ['user' => $user->username]),
 
-            // Statistics subject to privacy settings
-            'uploaded'     => $v('show_upload', str_replace("\u{00A0}", ' ', $user->formatted_uploaded)),
-            'downloaded'   => $v('show_download', str_replace("\u{00A0}", ' ', $user->formatted_downloaded)),
-            'ratio'        => $v('show_upload', $user->formatted_ratio),   // ratio depends on upload
-            'buffer'       => $v('show_upload', str_replace("\u{00A0}", ' ', $user->formatted_buffer)),
-            'seeding'      => $v('show_peer', $user->seeding_torrents_count),
-            'leeching'     => $v('show_peer', $user->leeching_torrents_count),
-            'seedbonus'    => $v('show_bon', $user->seedbonus),
+            // Traffic stats: all gated by show_profile_torrent_ratio, matching
+            // the "Traffic Statistics" section on the profile page.
+            'uploaded'    => $v('show_profile_torrent_ratio', str_replace("\u{00A0}", ' ', $user->formatted_uploaded)),
+            'downloaded'  => $v('show_profile_torrent_ratio', str_replace("\u{00A0}", ' ', $user->formatted_downloaded)),
+            'ratio'       => $v('show_profile_torrent_ratio', $user->formatted_ratio),
+            'buffer'      => $v('show_profile_torrent_ratio', str_replace("\u{00A0}", ' ', $user->formatted_buffer)),
+
+            // Peer stats: same flag as the seeding section on the profile page.
+            'seeding'     => $v('show_profile_torrent_seed', $user->seeding_torrents_count),
+            'leeching'    => $v('show_profile_torrent_seed', $user->leeching_torrents_count),
+
+            // Non-anonymous upload count: matches what the profile page shows to regular
+            // users in its public "Torrent count" section (anon=false, no status filter).
+            'uploads'      => $v('show_profile_torrent_count', $user->non_anon_uploads_count),
+
+            // BON (Bonus Points) and warnings.
+            'seedbonus'    => $v('show_profile_bon_extra', str_replace("\u{202F}", ' ', $user->formatted_seedbonus)),
             'hit_and_runs' => $v('show_profile_warning', $user->hitandruns),
         ], 'User profile retrieved successfully.');
     }
