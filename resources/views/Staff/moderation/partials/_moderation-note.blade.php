@@ -14,7 +14,7 @@
             {{ __('common.reason') }}
         </button>
         <div class="bbcode-rendered" x-show="open" x-cloak x-transition style="margin-top: 4px;">
-            <blockquote>{{ $torrent->moderation_note }}</blockquote>
+            <blockquote>@bbcode($torrent->moderation_note)</blockquote>
         </div>
     </div>
 @endif
