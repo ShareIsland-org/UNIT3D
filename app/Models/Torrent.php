@@ -66,6 +66,7 @@ use AllowDynamicProperties;
  * @property ModerationStatus                $status
  * @property \Illuminate\Support\Carbon|null $moderated_at
  * @property int|null                        $moderated_by
+ * @property string|null                     $moderation_note
  * @property bool                            $anon
  * @property bool                            $sticky
  * @property int                             $internal

@@ -113,9 +113,10 @@ class ModerationController extends Controller
 
             case ModerationStatus::REJECTED:
                 $torrent->update([
-                    'status'       => ModerationStatus::REJECTED,
-                    'moderated_at' => now(),
-                    'moderated_by' => $staff->id,
+                    'status'          => ModerationStatus::REJECTED,
+                    'moderated_at'    => now(),
+                    'moderated_by'    => $staff->id,
+                    'moderation_note' => $request->message,
                 ]);
 
                 $conversation = Conversation::create(['subject' => 'Your upload, '.$torrent->name.', has been rejected by '.$staff->username]);
@@ -137,9 +138,10 @@ class ModerationController extends Controller
 
             case ModerationStatus::POSTPONED:
                 $torrent->update([
-                    'status'       => ModerationStatus::POSTPONED,
-                    'moderated_at' => now(),
-                    'moderated_by' => $staff->id,
+                    'status'          => ModerationStatus::POSTPONED,
+                    'moderated_at'    => now(),
+                    'moderated_by'    => $staff->id,
+                    'moderation_note' => $request->message,
                 ]);
 
                 $conversation = Conversation::create(['subject' => 'Your upload, '.$torrent->name.', has been postponed by '.$staff->username]);

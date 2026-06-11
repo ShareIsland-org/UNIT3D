@@ -134,6 +134,7 @@
                                 <a href="{{ route('torrents.show', ['id' => $torrent->id]) }}">
                                     {{ $torrent->name }}
                                 </a>
+                                @include('Staff.moderation.partials._moderation-note', ['torrent' => $torrent])
                             </td>
                             <td>
                                 <i
@@ -232,6 +233,7 @@
                                 <a href="{{ route('torrents.show', ['id' => $torrent->id]) }}">
                                     {{ $torrent->name }}
                                 </a>
+                                @include('Staff.moderation.partials._moderation-note', ['torrent' => $torrent])
                             </td>
                             <td>
                                 <i
