@@ -78,7 +78,6 @@
                                     @endif
 
                                     <li>Freeleech globale</li>
-									<li>Accesso al Server OnDemand (PLEX, JELLYFIN)</li>
                                     <li
                                         style="
                                             background-image: url(/img/sparkels.gif);
