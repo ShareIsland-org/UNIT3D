@@ -86,6 +86,9 @@
                                     >
                                         Username scintillante 
                                     </li>
+                                    <li>Immunità warning per H&R durante il periodo da sostenitore, NON abusarne</li>
+                                    <li>Gli avvisi per H&R attivi verranno rimossi</li>
+
                                     <li>
                                         Username con la stella del donatore
                                         @if ($package->donor_value === null)
