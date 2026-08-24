@@ -16,9 +16,13 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\Enums\UserGroup;
+use App\Models\Group;
 use App\Models\User;
+use App\Services\Unit3dAnnounce;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class LoginListener
 {
@@ -27,10 +31,28 @@ class LoginListener
      */
     public function handle(Login $event): void
     {
-        // Update Login Timestamp
-        if ($event->user instanceof User) {
-            $event->user->last_login = Carbon::now();
-            $event->user->save();
+        if (! $event->user instanceof User) {
+            return;
         }
+
+        $user = $event->user;
+
+        if ($user->group_id === UserGroup::DISABLED->value) {
+            $user->group_id     = Group::query()->where('slug', 'user')->soleValue('id');
+            $user->can_download = true;
+            $user->disabled_at  = null;
+
+            cache()->forget('user:'.$user->passkey);
+            Unit3dAnnounce::addUser($user);
+
+            Log::info('LoginListener: account ripristinato da Disabled a User', [
+                'user_id'  => $user->id,
+                'username' => $user->username,
+                'via'      => $event->remember ? 'remember-me' : 'form-login',
+            ]);
+        }
+
+        $user->last_login = Carbon::now();
+        $user->save();
     }
 }
