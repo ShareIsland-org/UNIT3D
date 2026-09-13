@@ -18,10 +18,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Enums\Occupation;
+use App\Enums\TmdbTvStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use AllowDynamicProperties;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * App\Models\TmdbTv.
@@ -42,6 +44,7 @@ use AllowDynamicProperties;
  * @property string|null                     $episode_run_time
  * @property \Illuminate\Support\Carbon|null $first_air_date
  * @property string|null                     $status
+ * @property TmdbTvStatus|null               $status_enum
  * @property string|null                     $homepage
  * @property int|null                        $in_production
  * @property \Illuminate\Support\Carbon|null $last_air_date
@@ -185,5 +188,17 @@ final class TmdbTv extends Model
     public function wishes(): HasMany
     {
         return $this->hasMany(Wish::class);
+    }
+
+    /**
+     * Get the typed status enum for the tv show, or null if unrecognized.
+     *
+     * @return Attribute<TmdbTvStatus|null, never>
+     */
+    protected function statusEnum(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?TmdbTvStatus => TmdbTvStatus::tryFrom($this->status ?? ''),
+        );
     }
 }

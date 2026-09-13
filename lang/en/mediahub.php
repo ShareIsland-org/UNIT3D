@@ -40,4 +40,10 @@ return [
     'tv-credits'      => 'TV credits:',
     'view-collection' => 'View the collection',
     'wiki-read'       => 'Read full bio on wikipedia:',
+    'ended'           => 'Ended',
+    'returning-series'=> 'Returning Series',
+    'canceled'        => 'Canceled',
+    'planned'         => 'Planned',
+    'pilot'           => 'Pilot',
+    'in-production'   => 'In Production',
 ];
