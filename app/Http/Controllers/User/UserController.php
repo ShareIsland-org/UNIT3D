@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * @see \Tests\Todo\Feature\Http\Controllers\UserControllerTest
@@ -263,5 +264,13 @@ class UserController extends Controller
         $user->update([
             'read_rules' => true,
         ]);
+    }
+
+    /**
+     * Redirect /users/me to authenticated user's own profile.
+     */
+    public function ownProfile(string $path = ''): RedirectResponse
+    {
+        return redirect('/users/'.auth()->user()->username.($path ? '/'.$path : ''));
     }
 }
