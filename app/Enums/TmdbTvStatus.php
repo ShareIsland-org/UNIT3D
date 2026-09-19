@@ -20,22 +20,22 @@ use Illuminate\Support\Str;
 
 enum TmdbTvStatus: string
 {
-    case RETURNINGSERIES = 'Returning Series';
-    case PLANNED         = 'Planned';
-    case INPRODUCTION    = 'In Production';
-    case ENDED           = 'Ended';
-    case CANCELED        = 'Canceled';
-    case PILOT           = 'Pilot';
+    case RETURNING_SERIES = 'Returning Series';
+    case PLANNED = 'Planned';
+    case IN_PRODUCTION = 'In Production';
+    case ENDED = 'Ended';
+    case CANCELED = 'Canceled';
+    case PILOT = 'Pilot';
 
     public function icon(): string
     {
         return match ($this) {
-            self::RETURNINGSERIES => 'fa-play',
-            self::PLANNED         => 'fa-calendar',
-            self::INPRODUCTION    => 'fa-clapperboard',
-            self::ENDED           => 'fa-stop',
-            self::CANCELED        => 'fa-times',
-            self::PILOT           => 'fa-camera-movie',
+            self::RETURNING_SERIES => 'fa-play',
+            self::PLANNED => 'fa-calendar',
+            self::IN_PRODUCTION => 'fa-clapperboard',
+            self::ENDED => 'fa-stop',
+            self::CANCELED => 'fa-times',
+            self::PILOT => 'fa-camera-movie',
         };
     }
 
@@ -46,5 +46,4 @@ enum TmdbTvStatus: string
     {
         return Str::kebab($this->value);
     }
-        
 }

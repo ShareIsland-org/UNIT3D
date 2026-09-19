@@ -137,7 +137,7 @@
                     {{ __('torrent.view-trailer') }}
                 </a>
             </li>
-        @endif        
+        @endif
         @if ($meta?->number_of_seasons)
         <li class="work__media-type">
             <a
