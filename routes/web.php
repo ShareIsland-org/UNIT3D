@@ -416,6 +416,11 @@ Route::middleware('language')->group(function (): void {
             });
         });
 
+        // Redirect /users/me to the authenticated user's own profile
+        Route::get('users/me/{path?}', [App\Http\Controllers\User\UserController::class, 'ownProfile'])
+            ->where('path', '.*')
+            ->name('users.me');
+
         // Private User Routes
         Route::prefix('users/{user:username}')->name('users.')->scopeBindings()->group(function (): void {
             Route::get('/', [App\Http\Controllers\User\UserController::class, 'show'])->name('show')->withTrashed();
