@@ -269,8 +269,14 @@ class UserController extends Controller
     /**
      * Redirect /users/me to authenticated user's own profile.
      */
-    public function ownProfile(string $path = ''): RedirectResponse
+    public function ownProfile(Request $request, string $path = ''): RedirectResponse
     {
-        return redirect('/users/'.auth()->user()->username.($path ? '/'.$path : ''));
+        $url = '/users/'.$request->user()->username.($path ? '/'.$path : '');
+
+        if ($query = $request->getQueryString()) {
+            $url .= '?'.$query;
+        }
+
+        return redirect($url);
     }
 }
