@@ -55,6 +55,7 @@ class UserFactory extends Factory
             'invites'           => $this->faker->randomNumber(),
             'hitandruns'        => $this->faker->randomNumber(),
             'rsskey'            => md5(random_bytes(60)),
+            'irc_key'           => bin2hex(random_bytes(16)),
             'chatroom_id'       => Chatroom::factory(),
             'read_rules'        => $this->faker->boolean(),
             'can_chat'          => $this->faker->boolean(),

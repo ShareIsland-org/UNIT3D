@@ -29,12 +29,7 @@ class IrckeyController extends Controller
      */
     public function index(Request $request, User $user): \Illuminate\Contracts\View\Factory|\Illuminate\View\View
     {
-        $betaUsernames = config('irc-auth.beta_usernames', []);
-        $isBeta = empty($betaUsernames) || \in_array($user->username, $betaUsernames, true);
-        abort_unless(
-            ($request->user()->is($user) && $isBeta) || $request->user()->group->is_modo,
-            403
-        );
+        $this->authorizeAccess($request, $user);
 
         return view('user.irckey.index', [
             'user'    => $user,
@@ -47,16 +42,9 @@ class IrckeyController extends Controller
      */
     protected function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
     {
-        $betaUsernames = config('irc-auth.beta_usernames', []);
-        $isBeta = empty($betaUsernames) || \in_array($user->username, $betaUsernames, true);
-        abort_unless(
-            ($request->user()->is($user) && $isBeta) || $request->user()->group->is_modo,
-            403
-        );
+        $this->authorizeAccess($request, $user);
 
         $changedByStaff = $request->user()->isNot($user);
-
-        abort_if($changedByStaff && !$request->user()->group->is_owner && $request->user()->group->level <= $user->group->level, 403);
 
         DB::transaction(function () use ($user, $changedByStaff): void {
             $user->irckeys()->latest()->first()?->update(['deleted_at' => now()]);
@@ -74,5 +62,28 @@ class IrckeyController extends Controller
 
         return to_route('users.irckeys.index', ['user' => $user])
             ->with('success', 'Your IRC key was changed successfully.');
+    }
+
+    /**
+     * A user can access their own IRC keys. Staff can access the keys of users in a lower level group, and the
+     * owner can access anyone's. The IRC key is a credential: it must never be readable by someone of an equal
+     * or lower level.
+     */
+    private function authorizeAccess(Request $request, User $user): void
+    {
+        $betaUsernames = config('irc-auth.beta_usernames', []);
+        $isBeta = empty($betaUsernames) || \in_array($user->username, $betaUsernames, true);
+
+        abort_unless(
+            ($request->user()->is($user) && $isBeta) || $request->user()->group->is_modo,
+            403
+        );
+
+        abort_if(
+            $request->user()->isNot($user)
+            && !$request->user()->group->is_owner
+            && $request->user()->group->level <= $user->group->level,
+            403
+        );
     }
 }
