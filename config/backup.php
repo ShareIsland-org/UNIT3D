@@ -218,9 +218,9 @@ return [
             Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class         => ['mail', 'discord'],
             Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['mail', 'discord'],
             Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class        => ['mail', 'discord'],
-            //Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class     => ['discord'],
-            //Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class   => ['discord'],
-            //Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class    => ['discord'],
+            Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class     => [],
+            Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class   => [],
+            Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class    => [],
         ],
 
         /*
