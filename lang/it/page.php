@@ -11,28 +11,40 @@ return [
  * @author     HDVinnie <hdinnovations@protonmail.com>
  * @license    https://www.gnu.org/licenses/agpl-3.0.en.html/ GNU Affero General Public License v3.0
  */
-    'aboutus-advantage' => 'Il vantaggio',
-    'aboutus-advantage1' => 'Abbiamo membri e membri esperti che conoscono bene il mondo del video / audio HD e del supporto tecnico.',
-    'aboutus-advantage2' => 'Insieme con la nostra vasta passione per film e programmi TV, offriamo anche una delle migliori selezioni di qualcosa che più non - FANRES! UN GRANDE GRAZIE ai nostri portatori di contenuti.',
-    'aboutus-advantage3' => 'Mentre accettiamo le donazioni per mantenere il sito attivo e funzionante non ci saranno PM o banner pestering sul sito. Non implorare da noi.',
-    'aboutus-advantage4' => 'La nostra comunità non è seconda a nessuno per la sua tenera età. Tra il nostro staff e la base di utenti, eravamo sempre qui per aiutare. Erano appassionati di assicurarsi che la tua esperienza su: il titolo è a dir poco sorprendente.',
-    'aboutus-advantage5' => 'Il nostro servizio è utilizzato quotidianamente da molte persone in tutto il mondo. Abbiamo dimostrato che ci interessa la funzionalità e la sicurezza del nostro codebase e può essere considerato affidabile e affidabile. I nostri sviluppatori lavorano quotidianamente per fornire un vero codice base di nex-gen.',
-    'aboutus-header' => 'Ciao',
-    'aboutus-rules' => 'Cosa abbiamo bisogno di te',
-    'aboutus-rules1' => 'Per essere un membro attivo della comunità! Ciò significa partecipare alle conversazioni in modo produttivo, aggiungere contenuti approvati e aiutare gli altri utenti, se possibile.',
-    'aboutus-rules2' => 'Per leggere le regole per intero e per favore rispettali!',
-    'aboutus-rules3' => 'Dare suggerimenti! Ci stiamo sforzando di rendere: titolo migliore ogni giorno. Non stiamo dicendo che ogni suggerimento verrà usato, ma non fa mai male vedere nuove idee.',
-    'aboutus-welcome' => 'Parliamone',
-    'aboutus-welcome-desc' => ': title è un database Movie / TV / FANRES realizzato dalla comunità . Tutti i dati sono stati aggiunti dalla nostra straordinaria community dal 2017.: i titoli si concentrano principalmente sui contenuti HD, una base di utenti proattiva, una base di codice impressionante / sicura e un team di personale cordiale e disponibile.',
-    'blacklist-browsers' => 'browser',
+
+    // ABOUT US
+    'aboutus-advantage' => 'I nostri punti di forza',
+    'aboutus-advantage1' => 'Abbiamo membri, anche molto esperti, che conoscono a fondo il mondo del video/audio HD e dell’assistenza tecnica.',
+    'aboutus-advantage2' => 'Oltre alla nostra grande passione per film e serie TV, offriamo una delle migliori selezioni di FANRES. Un enorme grazie ai nostri contributori.',
+    'aboutus-advantage3' => 'Accettiamo donazioni per mantenere il sito attivo, ma non troverai messaggi privati o banner invadenti. Non chiediamo nulla in modo insistente.',
+    'aboutus-advantage4' => 'La nostra comunità, nonostante la giovane età, è tra le migliori. Staff e utenti sono sempre pronti ad aiutare, garantendo un’esperienza su :title davvero eccezionale.',
+    'aboutus-advantage5' => 'Il nostro servizio viene utilizzato ogni giorno da persone in tutto il mondo. Ci impegniamo per mantenere una codebase sicura, stabile e affidabile. I nostri sviluppatori lavorano quotidianamente per offrire una piattaforma di nuova generazione.',
+
+    'aboutus-header' => 'Benvenuto',
+    'aboutus-rules' => 'Cosa chiediamo ai nostri utenti',
+    'aboutus-rules1' => 'Essere membri attivi della community: partecipare alle conversazioni, contribuire con contenuti approvati e aiutare gli altri utenti quando possibile.',
+    'aboutus-rules2' => 'Leggere attentamente le regole e rispettarle.',
+    'aboutus-rules3' => 'Proporre suggerimenti! Lavoriamo ogni giorno per migliorare :title. Non possiamo garantire che ogni idea venga adottata, ma nuove proposte sono sempre benvenute.',
+
+    'aboutus-welcome' => 'Parliamone insieme',
+    'aboutus-welcome-desc' => ':title è un database Movie/TV/FANRES creato dalla community. Tutti i dati sono stati aggiunti dai nostri utenti dal 2017. :title si concentra sui contenuti HD, su una community attiva, su una codebase sicura e su uno staff cordiale e disponibile.',
+
+    // BLACKLIST / WHITELIST
+    'blacklist-browsers' => 'Browser',
     'blacklist-btclient' => 'Client BitTorrent',
-    'blacklist-clients' => 'clienti',
-    'blacklist-desc' => 'I seguenti browser e client Bittorrent sono nella lista nera / Proibiti dall annuncio di: titolo',
-    'blacklist-webbrowser' => 'Programma di navigazione in rete',
-    'blacklist-emaildomain' => 'Dominio bloccato',
-    'email-blacklist-desc' => 'I seguenti domini di posta elettronica sono bloccati dall essere utilizzati. Non puoi registrarti o inviare un invito al seguente.',
-    'email-whitelist-desc' => 'I seguenti domini di posta elettronica sono i soli domini di posta elettronica ad essere autorizzati. Puoi solo registrarti o inviare un invito usando il seguente.',
+    'blacklist-clients' => 'Client',
+    'blacklist-desc' => 'I seguenti browser e client BitTorrent sono nella lista nera / proibiti da :title.',
+    'blacklist-webbrowser' => 'Browser web',
+
+    // QUI I PLURALI CORRETTI
+    'blacklist-emaildomain' => 'Domini bloccati',
+    'email-blacklist-desc' => 'I seguenti domini email sono bloccati. Non è possibile registrarsi né inviare inviti utilizzandoli.',
+
+    'email-whitelist-desc' => 'Solo i seguenti domini email sono autorizzati. Puoi registrarti o inviare inviti esclusivamente tramite questi domini.',
+    'whitelist-emaildomain' => 'Domini autorizzati',
+
+    // STAFF
     'staff-group' => 'Gruppo',
     'staff-title' => 'Titolo',
-    'whitelist-emaildomain' => 'Dominio fidato',
 ];
+

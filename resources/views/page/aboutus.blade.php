@@ -20,12 +20,12 @@
     <section class="panelV2">
         <h2 class="panel__heading">{{ __('page.aboutus-header') }}</h2>
         <div class="panel__body">
-            <h3>{{ __('page.aboutus-welcome') }} {{ config('other.title') }}</h3>
+            <h3>{{ __('page.aboutus-welcome') }}</h3>
             <p>{{ __('page.aboutus-welcome-desc', ['title' => config('other.title')]) }}</p>
 
             <h4>
                 <i class="{{ config('other.font-awesome') }} fa-globe" aria-hidden="true"></i>
-                {{ __('page.aboutus-advantage') }} {{ config('other.title') }}
+                {{ __('page.aboutus-advantage') }}
                 <i class="{{ config('other.font-awesome') }} fa-globe" aria-hidden="true"></i>
             </h4>
             <ol class="wrapper">
