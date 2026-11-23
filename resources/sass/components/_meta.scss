@@ -497,6 +497,39 @@
     }
 }
 
+/* Media Status
+---------------------------------------------------------------------------- */
+
+.work__tags > li > span.work__status-ended {
+    color: var(--torrent-card-status-ended);
+    font-weight: bold;
+}
+
+.work__tags > li > span.work__status-returning-series {
+    color: var(--torrent-card-status-returning-series);
+    font-weight: bold;
+}
+
+.work__tags > li > span.work__status-canceled {
+    color: var(--torrent-card-status-canceled);
+    font-weight: bold;
+}
+
+.work__tags > li > span.work__status-planned {
+    color: var(--torrent-card-status-planned);
+    font-weight: bold;
+}
+
+.work__tags > li > span.work__status-pilot {
+    color: var(--torrent-card-status-pilot);
+    font-weight: bold;
+}
+
+.work__tags > li > span.work__status-in-production {
+    color: var(--torrent-card-status-in-production);
+    font-weight: bold;
+}
+
 /* Meta Poster Popup
 ---------------------------------------------------------------------------- */
 

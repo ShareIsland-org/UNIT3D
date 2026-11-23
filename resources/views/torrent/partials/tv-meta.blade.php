@@ -138,6 +138,27 @@
                 </a>
             </li>
         @endif
+        @if ($meta?->number_of_seasons)
+        <li class="work__media-type">
+            <a
+                class="work__media-type-link"
+                href="https://www.themoviedb.org/tv/{{ $meta->id }}/seasons"
+                title="{{ $meta->number_of_seasons  }} {{ $meta->number_of_seasons == 1 ? __('torrent.season') : __('mediahub.seasons') }}"
+                target="_blank"
+            >
+                {{ $meta->number_of_seasons  }}
+                {{ $meta->number_of_seasons == 1 ? __('torrent.season') : __('mediahub.seasons') }}
+            </a>
+        </li>
+        @endif
+        @if ($meta?->status_enum)
+            <li class="work__media-status">
+                <span class="work__status-{{ $meta->status_enum->class() }}" title="{{ __('mediahub.' . $meta->status_enum->class()) }}">
+                    <i class="{{ config('other.font-awesome') }} {{ $meta->status_enum->icon() }}"></i>
+                    {{ __('mediahub.' . $meta->status_enum->class()) }}
+                </span>
+            </li>
+        @endif
     </ul>
     <ul class="meta__ids">
         @foreach (array_unique(array_filter([$meta->id ?? 0, $torrent->tmdb_tv_id ?? 0])) as $tmdbId)

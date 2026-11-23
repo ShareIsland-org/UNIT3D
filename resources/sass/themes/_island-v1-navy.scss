@@ -361,6 +361,12 @@
     --torrent-card-head-fg: #d1dde2;
     --torrent-card-link-fg: #d1dde2;
     --torrent-card-genre-fg: #bfcbd9;
+    --torrent-card-status-ended: #878787;
+    --torrent-card-status-returning-series: #3fb618;
+    --torrent-card-status-canceled: red;
+    --torrent-card-status-planned: #ffb800;
+    --torrent-card-status-pilot: #42a5f5;
+    --torrent-card-status-in-production: #42f5c5;
 
     --torrent-group-bg: var(--navy-light);
     --torrent-group-header-bg: var(--navy-light);
