@@ -154,9 +154,9 @@
                             {{ __('common.title') }}
                             @include('livewire.includes._sort-icon', ['field' => 'title'])
                         </th>
-                        <th wire:click="sortBy('reported_user')" role="columnheader button">
+                        <th wire:click="sortBy('reported_user_id')" role="columnheader button">
                             Reported
-                            @include('livewire.includes._sort-icon', ['field' => 'reported_user'])
+                            @include('livewire.includes._sort-icon', ['field' => 'reported_user_id'])
                         </th>
                         <th wire:click="sortBy('reporter_id')" role="columnheader button">
                             {{ __('common.reporter') }}
