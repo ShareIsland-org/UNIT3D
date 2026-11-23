@@ -65,9 +65,29 @@ class IrckeyController extends Controller
     }
 
     /**
-     * A user can access their own IRC keys. Staff can access the keys of users in a lower level group, and the
-     * owner can access anyone's. The IRC key is a credential: it must never be readable by someone of an equal
-     * or lower level.
+     * Single access rule shared by index() (reading the keys) and update() (resetting the key).
+     *
+     * The IRC key is a credential: whoever can read it can sign in to IRC as that user. The rule has two steps:
+     *
+     *  1. Who may reach the page at all: the user themselves (when irc-auth.beta_usernames is empty or lists
+     *     them), or any group flagged is_modo.
+     *  2. Hierarchy between two different users: the owner group (is_owner) may act on anyone, every other
+     *     staff member only on users in a strictly lower level group. Peers and superiors get a 403, so a
+     *     moderator can never read an administrator's key, nor another moderator's.
+     *
+     * The group "level" is the numeric `level` column of the groups table, so the hierarchy follows whatever
+     * the staff configured there, not a fixed list of group names.
+     *
+     * How to change the policy (keep index() and update() on the same rule, otherwise one of them becomes a
+     * way around the other):
+     *  - Staff may reset a key but never read it: split this method, keep step 2 for update() and let index()
+     *    abort unless the viewer is the user.
+     *  - Let peers act on each other: change the `<=` in step 2 to `<`.
+     *  - Drop the hierarchy entirely (original behaviour): remove step 2. Not recommended, it lets any
+     *    moderator read the keys of administrators.
+     *
+     * Covered by tests/Feature/Http/Controllers/User/IrckeyControllerTest.php: update the tests together with
+     * the rule.
      */
     private function authorizeAccess(Request $request, User $user): void
     {
