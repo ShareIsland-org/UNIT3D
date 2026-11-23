@@ -62,8 +62,8 @@ Route::middleware(['auth:'.AuthGuard::API->value, 'banned'])->group(function ():
 
     // Requests System
     Route::prefix('requests')->group(function (): void {
-        Route::get('/filter', [App\Http\Controllers\API\RequestController::class, 'filter']);
-        Route::get('/{id}', [App\Http\Controllers\API\RequestController::class, 'show'])->where('id', '[0-9]+');
+        Route::get('/filter', [App\Http\Controllers\API\TorrentRequestController::class, 'filter']);
+        Route::get('/{id}', [App\Http\Controllers\API\TorrentRequestController::class, 'show'])->where('id', '[0-9]+');
     });
 
     // User
